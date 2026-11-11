@@ -1,0 +1,28 @@
+# Node / Expo
+node_modules/
+.expo/
+dist/
+web-build/
+*.log
+
+# Flutter
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+build/
+*.iml
+.idea/
+
+# Android / Gradle
+.gradle/
+local.properties
+android/key.properties
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editors / local tools
+.vs/
+.vscode/
+.claude/

@@ -1,0 +1,27 @@
+<resources>
+    <string name="app_name">Нотатки</string>
+    <string name="new_note">Нова нотатка</string>
+    <string name="edit_note">Редагування</string>
+    <string name="no_title">Без назви</string>
+    <string name="title_hint">Заголовок</string>
+    <string name="content_hint">Текст нотатки…</string>
+    <string name="empty_notes">Нотаток ще немає.\nНатисніть +, щоб створити першу.</string>
+    <string name="empty_search">Нічого не знайдено</string>
+    <string name="notes_count">Всього: %1$d</string>
+    <string name="search">Пошук</string>
+    <string name="search_hint">Пошук нотаток…</string>
+    <string name="sort">Сортування</string>
+    <string name="sort_date">За датою</string>
+    <string name="sort_title">За назвою</string>
+    <string name="pin">Закріпити</string>
+    <string name="unpin">Відкріпити</string>
+    <string name="pinned_msg">Нотатку закріплено</string>
+    <string name="unpinned_msg">Нотатку відкріплено</string>
+    <string name="share">Поділитися</string>
+    <string name="delete">Видалити</string>
+    <string name="cancel">Скасувати</string>
+    <string name="delete_title">Видалити нотатку?</string>
+    <string name="delete_message">Цю дію не можна скасувати.</string>
+    <string name="note_deleted">Нотатку видалено</string>
+    <string name="undo">Відмінити</string>
+</resources>
