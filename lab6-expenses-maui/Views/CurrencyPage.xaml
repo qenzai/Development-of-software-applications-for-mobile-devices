@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ExpenseTracker.ViewModels"
+             xmlns:models="clr-namespace:ExpenseTracker.Models"
+             x:Class="ExpenseTracker.Views.CurrencyPage"
+             x:DataType="vm:CurrencyViewModel"
+             Title="Конвертер валют">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="⟳ Оновити" Command="{Binding RefreshCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="12" RowSpacing="10">
+
+        <Border Style="{StaticResource Card}">
+            <VerticalStackLayout Spacing="6">
+                <Label Text="Сума" Style="{StaticResource Caption}" />
+                <Grid ColumnDefinitions="*,110" ColumnSpacing="10">
+                    <Entry Text="{Binding AmountText}" Keyboard="Numeric" FontSize="22" />
+                    <Picker Grid.Column="1" ItemsSource="{Binding Currencies}"
+                            SelectedItem="{Binding FromCurrency}" FontSize="18" />
+                </Grid>
+                <Button Text="Підставити мої витрати за цей місяць" Command="{Binding UseMonthTotalCommand}"
+                        BackgroundColor="{StaticResource PrimaryLight}" TextColor="{StaticResource TextMain}" />
+            </VerticalStackLayout>
+        </Border>
+
+        <Label Grid.Row="1" Text="{Binding Status}" Style="{StaticResource Caption}" />
+        <Label Grid.Row="2" Text="{Binding Error}" TextColor="{StaticResource Danger}"
+               IsVisible="{Binding HasError}" />
+
+        <Grid Grid.Row="3">
+            <CollectionView ItemsSource="{Binding Results}" SelectionMode="None">
+                <CollectionView.ItemsLayout>
+                    <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+                </CollectionView.ItemsLayout>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:ConversionRow">
+                        <Border Style="{StaticResource Card}">
+                            <Grid ColumnDefinitions="60,*,Auto">
+                                <Label Text="{Binding Code}" FontSize="18" FontAttributes="Bold"
+                                       TextColor="{StaticResource Primary}" VerticalOptions="Center" />
+                                <VerticalStackLayout Grid.Column="1">
+                                    <Label Text="{Binding Name}" />
+                                    <Label Text="{Binding RateText}" Style="{StaticResource Caption}" />
+                                </VerticalStackLayout>
+                                <Label Grid.Column="2" Text="{Binding ValueText}" FontSize="17"
+                                       FontAttributes="Bold" VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}"
+                               Color="{StaticResource Primary}" VerticalOptions="Start" Margin="0,30,0,0" />
+        </Grid>
+    </Grid>
+</ContentPage>

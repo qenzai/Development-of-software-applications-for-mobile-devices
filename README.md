@@ -7,6 +7,7 @@
 | 3 | `lab3-weather` | Expo, React Native, Redux Toolkit, React Navigation (Stack + Tabs) | Погода: пошук міст, прогноз (поточний, погодинний, 7 днів), обрані міста, налаштування °C/°F |
 | 4 | `lab4-recipes-flutter` | Flutter, http, provider, shared_preferences | Книга рецептів (TheMealDB): категорії, пошук, деталі, обране, випадковий рецепт |
 | 5 | `lab5-notes-kotlin` | Kotlin, Android SDK, SQLite, RecyclerView | Нотатки: створення/редагування, кольори, закріплення, пошук, сортування, свайп-видалення з відміною, поділитися |
+| 6 | `lab6-expenses-maui` | .NET MAUI (C#, XAML, MVVM, Shell) | Облік витрат: список з пошуком і фільтром, додавання/редагування, статистика за місяць з бюджетом, конвертер валют (open.er-api.com) |
 
 ## Лаби 1–3 (Expo)
 
@@ -44,3 +45,24 @@ flutter run
 Збірка з терміналу: `gradlew assembleDebug`, готовий APK: `lab5-notes-kotlin/app/build/outputs/apk/debug/app-debug.apk`.
 
 Android SDK встановлено в `C:\Users\Serhii\AppData\Local\Android\Sdk`.
+
+## Лаба 6 (.NET MAUI)
+
+Потрібен .NET 10 SDK з workload `maui-android` (або Visual Studio 2022 з компонентом .NET MAUI).
+Найпростіше — відкрити `lab6-expenses-maui/ExpenseTracker.csproj` у Visual Studio і натиснути ▶.
+
+Запуск на Windows (як звичайна програма на ПК):
+
+```bash
+cd lab6-expenses-maui
+dotnet build -t:Run -f net10.0-windows10.0.19041.0
+```
+
+Збірка APK для Android:
+
+```bash
+dotnet build -f net10.0-android -c Release
+```
+
+Структура: `Models/` — дані, `Services/` — збереження у JSON і запити курсів валют,
+`ViewModels/` — логіка (MVVM), `Views/` — сторінки XAML, `AppShell.xaml` — нижні вкладки і маршрути.

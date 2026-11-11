@@ -26,3 +26,7 @@ Thumbs.db
 .vs/
 .vscode/
 .claude/
+
+# .NET
+bin/
+obj/

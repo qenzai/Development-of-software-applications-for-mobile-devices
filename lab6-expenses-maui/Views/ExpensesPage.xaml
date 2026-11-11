@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ExpenseTracker.ViewModels"
+             xmlns:models="clr-namespace:ExpenseTracker.Models"
+             x:Class="ExpenseTracker.Views.ExpensesPage"
+             x:DataType="vm:ExpensesViewModel"
+             Title="Мої витрати">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="+ Додати" Command="{Binding AddCommand}" />
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="Auto,Auto,Auto,*" Padding="12" RowSpacing="10">
+
+        <!-- підсумок -->
+        <Border Style="{StaticResource Card}" BackgroundColor="{StaticResource Primary}">
+            <Grid ColumnDefinitions="*,Auto">
+                <VerticalStackLayout>
+                    <Label Text="Разом за вибраним фільтром" TextColor="#C8E6C9" FontSize="13" />
+                    <Label Text="{Binding TotalText}" TextColor="White" FontSize="28" FontAttributes="Bold" />
+                </VerticalStackLayout>
+                <Label Grid.Column="1" Text="{Binding CountText}" TextColor="#C8E6C9"
+                       VerticalOptions="End" />
+            </Grid>
+        </Border>
+
+        <SearchBar Grid.Row="1" Placeholder="Пошук за назвою або нотаткою"
+                   Text="{Binding SearchText}" BackgroundColor="White" />
+
+        <Picker Grid.Row="2" Title="Категорія"
+                ItemsSource="{Binding CategoryFilters}"
+                SelectedItem="{Binding SelectedFilter}"
+                BackgroundColor="White" />
+
+        <CollectionView Grid.Row="3" ItemsSource="{Binding Filtered}" SelectionMode="None">
+            <CollectionView.EmptyView>
+                <VerticalStackLayout Padding="30" Spacing="8" HorizontalOptions="Center">
+                    <Label Text="🧾" FontSize="48" HorizontalOptions="Center" />
+                    <Label Text="Витрат поки немає" FontSize="16" HorizontalOptions="Center" />
+                    <Label Text="Натисніть «+ Додати» вгорі, щоб записати першу"
+                           Style="{StaticResource Caption}" HorizontalTextAlignment="Center" />
+                </VerticalStackLayout>
+            </CollectionView.EmptyView>
+
+            <CollectionView.ItemsLayout>
+                <LinearItemsLayout Orientation="Vertical" ItemSpacing="8" />
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate x:DataType="models:Expense">
+                    <SwipeView>
+                        <SwipeView.RightItems>
+                            <SwipeItems Mode="Execute">
+                                <SwipeItem Text="Видалити" BackgroundColor="{StaticResource Danger}"
+                                           Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ExpensesViewModel}}, Path=DeleteCommand, x:DataType=vm:ExpensesViewModel}"
+                                           CommandParameter="{Binding .}" />
+                            </SwipeItems>
+                        </SwipeView.RightItems>
+
+                        <Border Style="{StaticResource Card}">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer
+                                    Command="{Binding Source={RelativeSource AncestorType={x:Type vm:ExpensesViewModel}}, Path=EditCommand, x:DataType=vm:ExpensesViewModel}"
+                                    CommandParameter="{Binding .}" />
+                            </Border.GestureRecognizers>
+
+                            <Grid ColumnDefinitions="Auto,*,Auto" ColumnSpacing="12">
+                                <Border WidthRequest="46" HeightRequest="46" StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 23"
+                                        BackgroundColor="{Binding CategoryColor}">
+                                    <Label Text="{Binding Icon}" FontSize="22"
+                                           HorizontalOptions="Center" VerticalOptions="Center" />
+                                </Border>
+
+                                <VerticalStackLayout Grid.Column="1" VerticalOptions="Center">
+                                    <Label Text="{Binding Title}" FontSize="16" FontAttributes="Bold"
+                                           LineBreakMode="TailTruncation" />
+                                    <Label Style="{StaticResource Caption}">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Category}" />
+                                                <Span Text=" · " />
+                                                <Span Text="{Binding DateText}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                    <Label Text="{Binding Note}" IsVisible="{Binding HasNote}"
+                                           Style="{StaticResource Caption}" FontAttributes="Italic"
+                                           LineBreakMode="TailTruncation" />
+                                </VerticalStackLayout>
+
+                                <Label Grid.Column="2" Text="{Binding AmountText}"
+                                       TextColor="{StaticResource Danger}" FontSize="16"
+                                       FontAttributes="Bold" VerticalOptions="Center" />
+                            </Grid>
+                        </Border>
+                    </SwipeView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+    </Grid>
+</ContentPage>

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ExpenseTracker.ViewModels"
+             xmlns:models="clr-namespace:ExpenseTracker.Models"
+             x:Class="ExpenseTracker.Views.StatsPage"
+             x:DataType="vm:StatsViewModel"
+             Title="Статистика">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="12" Spacing="12">
+
+            <!-- вибір місяця -->
+            <Grid ColumnDefinitions="Auto,*,Auto">
+                <Button Text="◀" Command="{Binding PrevMonthCommand}" WidthRequest="50" />
+                <Label Grid.Column="1" Text="{Binding MonthTitle}" Style="{StaticResource Header}"
+                       HorizontalOptions="Center" VerticalOptions="Center" />
+                <Button Grid.Column="2" Text="▶" Command="{Binding NextMonthCommand}" WidthRequest="50" />
+            </Grid>
+
+            <!-- бюджет -->
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <VerticalStackLayout>
+                            <Label Text="Витрачено за місяць" Style="{StaticResource Caption}" />
+                            <Label Text="{Binding TotalText}" FontSize="28" FontAttributes="Bold" />
+                        </VerticalStackLayout>
+                        <Button Grid.Column="1" Text="Бюджет" Command="{Binding SetBudgetCommand}"
+                                VerticalOptions="Center" BackgroundColor="{StaticResource Accent}" />
+                    </Grid>
+                    <ProgressBar Progress="{Binding BudgetProgress}" ProgressColor="{Binding BudgetColor}"
+                                 HeightRequest="10" />
+                    <Label Text="{Binding BudgetText}" Style="{StaticResource Caption}" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- коротка статистика -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="12">
+                <Border Style="{StaticResource Card}">
+                    <VerticalStackLayout>
+                        <Label Text="Записів" Style="{StaticResource Caption}" />
+                        <Label Text="{Binding CountText}" FontSize="20" FontAttributes="Bold" />
+                    </VerticalStackLayout>
+                </Border>
+                <Border Grid.Column="1" Style="{StaticResource Card}">
+                    <VerticalStackLayout>
+                        <Label Text="В середньому за день" Style="{StaticResource Caption}" />
+                        <Label Text="{Binding AverageText}" FontSize="20" FontAttributes="Bold" />
+                    </VerticalStackLayout>
+                </Border>
+            </Grid>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout>
+                    <Label Text="Найбільша витрата" Style="{StaticResource Caption}" />
+                    <Label Text="{Binding BiggestText}" FontSize="16" FontAttributes="Bold" />
+                </VerticalStackLayout>
+            </Border>
+
+            <!-- по категоріях -->
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="За категоріями" Style="{StaticResource Header}" />
+                    <Label Text="У цьому місяці витрат немає" Style="{StaticResource Caption}"
+                           IsVisible="{Binding HasData, Converter={StaticResource InvertBool}}" />
+
+                    <VerticalStackLayout BindableLayout.ItemsSource="{Binding ByCategory}" Spacing="12">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:CategoryStat">
+                                <VerticalStackLayout Spacing="4">
+                                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" ColumnSpacing="8">
+                                        <Label Text="{Binding Icon}" FontSize="18" />
+                                        <Label Grid.Column="1" Text="{Binding Name}" VerticalOptions="Center" />
+                                        <Label Grid.Column="2" Text="{Binding AmountText}" FontAttributes="Bold"
+                                               VerticalOptions="Center" />
+                                        <Label Grid.Column="3" Text="{Binding ShareText}" Style="{StaticResource Caption}"
+                                               WidthRequest="44" HorizontalTextAlignment="End" VerticalOptions="Center" />
+                                    </Grid>
+                                    <ProgressBar Progress="{Binding Share}" ProgressColor="{Binding Color}" />
+                                </VerticalStackLayout>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </VerticalStackLayout>
+                </VerticalStackLayout>
+            </Border>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

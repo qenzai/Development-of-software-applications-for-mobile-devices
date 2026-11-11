@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:ExpenseTracker.ViewModels"
+             xmlns:models="clr-namespace:ExpenseTracker.Models"
+             x:Class="ExpenseTracker.Views.EditExpensePage"
+             x:DataType="vm:EditExpenseViewModel"
+             Title="{Binding PageTitle}">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="16" Spacing="14">
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Назва" Style="{StaticResource Caption}" />
+                    <Entry Text="{Binding Title}" Placeholder="Наприклад: Обід у кафе" MaxLength="60" />
+
+                    <Label Text="Сума, ₴" Style="{StaticResource Caption}" Margin="0,8,0,0" />
+                    <Entry Text="{Binding AmountText}" Placeholder="0,00" Keyboard="Numeric" />
+
+                    <Label Text="Дата" Style="{StaticResource Caption}" Margin="0,8,0,0" />
+                    <DatePicker Date="{Binding Date}" MaximumDate="{Binding MaxDate}" Format="dd.MM.yyyy" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="8">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <Label Text="Категорія" Style="{StaticResource Caption}" />
+                        <Label Grid.Column="1" Text="{Binding SelectedCategoryText}" FontAttributes="Bold" />
+                    </Grid>
+
+                    <FlexLayout BindableLayout.ItemsSource="{Binding CategoryList}"
+                                Wrap="Wrap" JustifyContent="Start">
+                        <BindableLayout.ItemTemplate>
+                            <DataTemplate x:DataType="models:CategoryInfo">
+                                <Border Margin="4" Padding="10,6" StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 16" BackgroundColor="{Binding Color}">
+                                    <Border.GestureRecognizers>
+                                        <TapGestureRecognizer
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type vm:EditExpenseViewModel}}, Path=PickCategoryCommand, x:DataType=vm:EditExpenseViewModel}"
+                                            CommandParameter="{Binding Name}" />
+                                    </Border.GestureRecognizers>
+                                    <Label TextColor="White" FontAttributes="Bold">
+                                        <Label.FormattedText>
+                                            <FormattedString>
+                                                <Span Text="{Binding Icon}" />
+                                                <Span Text=" " />
+                                                <Span Text="{Binding Name}" />
+                                            </FormattedString>
+                                        </Label.FormattedText>
+                                    </Label>
+                                </Border>
+                            </DataTemplate>
+                        </BindableLayout.ItemTemplate>
+                    </FlexLayout>
+                </VerticalStackLayout>
+            </Border>
+
+            <Border Style="{StaticResource Card}">
+                <VerticalStackLayout Spacing="6">
+                    <Label Text="Нотатка (необов'язково)" Style="{StaticResource Caption}" />
+                    <Editor Text="{Binding Note}" Placeholder="Деталі витрати..." AutoSize="TextChanges"
+                            MinimumHeightRequest="80" MaxLength="300" />
+                </VerticalStackLayout>
+            </Border>
+
+            <Button Text="💾 Зберегти" Command="{Binding SaveCommand}" FontSize="17" />
+            <Button Text="🗑 Видалити" Command="{Binding DeleteCommand}" IsVisible="{Binding IsEditing}"
+                    BackgroundColor="{StaticResource Danger}" />
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>
